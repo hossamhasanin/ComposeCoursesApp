@@ -45,96 +45,99 @@ import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    Scaffold(
+        bottomBar = {
+            CustomBottomNav()
+        },
+        containerColor = Color.White
     ) {
-        Column {
+        Box(
+            modifier = Modifier
+                .padding(bottom = it.calculateBottomPadding() - 8.dp)
+                .fillMaxSize()
+        ) {
             Box(
                 modifier = Modifier
-                    .fillMaxHeight(0.17f)
+                    .fillMaxHeight(0.25f)
                     .fillMaxWidth()
                     .background(
                         color = Color(0xFF3D5CFF)
                     )
             )
-            Box(
+            Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(
-                        color = Color.White
-                    )
-            )
-        }
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, start = 20.dp, end = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxSize()
             ) {
-                Column(
+                Row(
                     modifier = Modifier
-                        .padding(top = 9.dp)
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, start = 20.dp, end = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Hi, Hossam",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "Let’s start learning",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = Color.White
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 9.dp)
+                    ) {
+                        Text(
+                            text = "Hi, Hossam",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Let’s start learning",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = Color.White
+                        )
+                    }
+
+                    Image(
+                        painter = painterResource(R.drawable.avatar),
+                        contentDescription = "avatar"
                     )
                 }
 
-                Image(
-                    painter = painterResource(R.drawable.avatar),
-                    contentDescription = "avatar"
-                )
-            }
-
-            LearnedTodayProgress(
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, top = 19.dp)
-                    .fillMaxWidth()
-                    .coloredShadow(
-                        color = Color(0x4DB8B8D2),
-                        offsetY = 8.dp,
-                        blurRadius = 12.dp,
-                        borderRadius = 16.dp
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    LearnedTodayProgress(
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, top = 19.dp)
+                            .fillMaxWidth()
+                            .coloredShadow(
+                                color = Color(0x4DB8B8D2),
+                                offsetY = 8.dp,
+                                blurRadius = 12.dp,
+                                borderRadius = 16.dp
+                            )
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        learnedMinutes = 46,
+                        totalMinutes = 60
                     )
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    ),
-                learnedMinutes = 46,
-                totalMinutes = 60
-            )
 
-            SuggestionsSection(
-                modifier = Modifier
-                    .padding(top = 16.dp, start = 12.dp)
-            )
+                    SuggestionsSection(
+                        modifier = Modifier
+                            .padding(top = 16.dp, start = 12.dp)
+                    )
 
-            LearningPlanSection(
-                modifier = Modifier
-                    .padding(top = 25.dp, start = 20.dp , end = 20.dp)
-            )
+                    LearningPlanSection(
+                        modifier = Modifier
+                            .padding(top = 25.dp, start = 20.dp , end = 20.dp)
+                    )
 
-            MeetUpCard(
-                modifier = Modifier
-                    .padding(top = 14.dp, start = 20.dp, end = 20.dp)
-            )
+                    MeetUpCard(
+                        modifier = Modifier
+                            .padding(top = 14.dp, start = 20.dp, end = 20.dp)
+                    )
+                }
+            }
         }
-
-        CustomBottomNav(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        )
     }
+
 }
 
 @Preview
