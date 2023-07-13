@@ -24,20 +24,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composecoursesapp.R
+import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 
 
 @Composable
-fun CustomBottomNav() {
+fun CustomBottomNav(
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .background(
+                color = Color.Transparent
+            )
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
+                .coloredShadow(
+                    color = Color(0x4DB8B8D2),
+                    borderRadius = 25.dp,
+                    blurRadius = 8.dp,
+                    offsetY = 4.dp
+                )
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(
@@ -233,7 +244,7 @@ fun BoxScope.SearchButton() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CustomBottomNavPreview() {
     ComposeCoursesAppTheme {

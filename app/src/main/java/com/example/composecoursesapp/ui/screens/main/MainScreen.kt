@@ -11,11 +11,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -30,9 +35,14 @@ import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.screens.main.components.AnimatedBarIndicator
+import com.example.composecoursesapp.ui.screens.main.components.CustomBottomNav
 import com.example.composecoursesapp.ui.screens.main.components.LearnedTodayProgress
+import com.example.composecoursesapp.ui.screens.main.components.LearningPlanSection
+import com.example.composecoursesapp.ui.screens.main.components.MeetUpCard
+import com.example.composecoursesapp.ui.screens.main.components.SuggestionsSection
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     Box(
@@ -88,8 +98,8 @@ fun MainScreen() {
 
             LearnedTodayProgress(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp, top = 19.dp)
+                    .fillMaxWidth()
                     .coloredShadow(
                         color = Color(0x4DB8B8D2),
                         offsetY = 8.dp,
@@ -103,7 +113,27 @@ fun MainScreen() {
                 learnedMinutes = 46,
                 totalMinutes = 60
             )
+
+            SuggestionsSection(
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 12.dp)
+            )
+
+            LearningPlanSection(
+                modifier = Modifier
+                    .padding(top = 25.dp, start = 20.dp , end = 20.dp)
+            )
+
+            MeetUpCard(
+                modifier = Modifier
+                    .padding(top = 14.dp, start = 20.dp, end = 20.dp)
+            )
         }
+
+        CustomBottomNav(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        )
     }
 }
 
