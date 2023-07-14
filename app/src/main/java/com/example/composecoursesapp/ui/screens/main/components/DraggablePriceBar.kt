@@ -6,13 +6,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -30,11 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -48,7 +44,7 @@ import kotlin.math.roundToInt
 @Composable
 fun DraggablePriceBar(
     circleSize: Dp = 20.dp,
-    circleStroke: Dp = 1.dp,
+    circleStroke: Dp = 2.dp,
     padding: PaddingValues = PaddingValues(20.dp),
     maxNum: Int = 7000,
     prices: List<Int> = listOf(0, 1000, 2000, 3000, 4000, 5000, 6000, 7000),
@@ -56,9 +52,9 @@ fun DraggablePriceBar(
     onPricesChanged: (Int, Int) -> Unit,
 ) {
 
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
+    // Optimize the prices values to fit the low and high price text on screen
+    // If the values are a lot there is no enough room for both high/low texts indicators without collapsing on each other
+    // tested with 8 values max and text font size of 12.sp
 
     var currentBarSize by remember {
         mutableStateOf(IntSize.Zero)
@@ -80,11 +76,8 @@ fun DraggablePriceBar(
         mutableStateOf(0f)
     }
 
-    var maxSlidePercent by remember {
-        mutableStateOf(0f)
-    }
-
-    var minPercent by remember {
+    // Dividing the bar into equal percent chunks
+    val minPercentBeforeColliding by remember {
         mutableStateOf(1f / prices.size)
     }
 
@@ -104,15 +97,25 @@ fun DraggablePriceBar(
         .padding(paddingValues = padding)
         .fillMaxWidth()
         .onSizeChanged {
-            size = it
             maximumBarWidth = it.width - padding
                 .calculateEndPadding(LayoutDirection.Ltr)
                 .toPx() - ((circleSize + (circleStroke * 2) * 2)).toPx()
-            maxSlidePercent = maximumBarWidth / it.width
+            val maxSlidePercent = maximumBarWidth / it.width
             currentBarWidth = maximumBarWidth * highSlidePercent
             Log.d("DraggablePriceBar", "maxSlidePercent: $maxSlidePercent")
         }) {
-        Column {
+        Box(
+            modifier = Modifier
+                .padding((circleSize/2) + (circleStroke / 2))
+                .width(maximumBarWidth.toDp())
+                .height(1.dp)
+                .background(Color(0xFFB8B8D2))
+                .align(Alignment.TopCenter)
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -134,19 +137,22 @@ fun DraggablePriceBar(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
                                 Log.d("DraggablePriceBar", "delta: $delta")
-                                val offset = maximumBarWidth * lowSlidePercent
-                                if (((offset + delta) / maximumBarWidth) < 0) {
+                                val movedLowCircleDist = maximumBarWidth * lowSlidePercent
+                                val calcMoveLowCirclePercent = (movedLowCircleDist + delta) / maximumBarWidth
+                                if (calcMoveLowCirclePercent < 0) {
                                     return@rememberDraggableState
                                 }
-                                val newPercent = ((offset + delta) / maximumBarWidth)
-                                if ((highSlidePercent - newPercent) <= minPercent) {
+                                // preventing two circles from colliding to each other
+                                if ((highSlidePercent - calcMoveLowCirclePercent) <= minPercentBeforeColliding) {
                                     return@rememberDraggableState
                                 }
-                                lowSlidePercent = newPercent
+                                lowSlidePercent = calcMoveLowCirclePercent
                                 currentBarWidth -= delta
                                 Log.d("DraggablePriceBar", "lowSlidePercent: $lowSlidePercent")
                                 Log.d("DraggablePriceBar", "highSlidePercent: $highSlidePercent")
-                                currentLowPrice = prices.firstOrNull {
+                                // when lowSlidePercent is lower than the minPercent before two sliders collide with each other
+                                // just output the first value of the given prices
+                                currentLowPrice = if (lowSlidePercent < minPercentBeforeColliding) prices[0] else prices.firstOrNull {
                                     val price = (maxNum * lowSlidePercent).roundToInt()
                                     (it - price).absoluteValue <= 100
                                 } ?: return@rememberDraggableState
@@ -157,8 +163,9 @@ fun DraggablePriceBar(
 
                 Box(
                     modifier = Modifier
+                        .padding(top = circleStroke)
                         .width(currentBarWidth.toDp())
-                        .height(2.dp)
+                        .height(circleStroke)
                         .background(Color(0xFF3D5CFF))
                         .onSizeChanged {
                             currentBarSize = it
@@ -175,20 +182,21 @@ fun DraggablePriceBar(
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
+                                val movedLowCircleDist = maximumBarWidth * lowSlidePercent
                                 Log.d(
                                     "DraggablePriceBar",
-                                    "delta: ${maximumBarWidth * lowSlidePercent}"
+                                    "delta: $movedLowCircleDist"
                                 )
-                                if (((currentBarWidth + delta) + (maximumBarWidth * lowSlidePercent)) >= maximumBarWidth) {
+                                val calcMoveHighCircleDist = (currentBarWidth + delta) + movedLowCircleDist
+                                if (calcMoveHighCircleDist >= maximumBarWidth) {
                                     return@rememberDraggableState
                                 }
-                                val newPercent =
-                                    ((currentBarWidth + delta) + (maximumBarWidth * lowSlidePercent)) / maximumBarWidth
-                                if ((newPercent - lowSlidePercent) <= minPercent) {
+                                val movePercent = calcMoveHighCircleDist / maximumBarWidth
+                                if ((movePercent - lowSlidePercent) <= minPercentBeforeColliding) {
                                     return@rememberDraggableState
                                 }
                                 currentBarWidth += delta
-                                highSlidePercent = newPercent
+                                highSlidePercent = movePercent
                                 Log.d("DraggablePriceBar", "lowSlidePercent: $lowSlidePercent")
                                 Log.d("DraggablePriceBar", "highSlidePercent: $highSlidePercent")
                                 currentHighPrice = prices.firstOrNull {
@@ -213,7 +221,10 @@ fun DraggablePriceBar(
                     color = Color(0xFF1F1F39),
                     modifier = Modifier
                         .padding(top = 4.dp)
-                        .offset(x = ((maximumBarWidth * lowSlidePercent) + ((circleSize.toPx() / 2) - 55)).toDp())
+                        .offset(x = if (currentLowPrice > 0)
+                                ((maximumBarWidth * lowSlidePercent) - ((circleSize.toPx() / 2))).toDp()
+                                else (maximumBarWidth * lowSlidePercent).toDp()
+                        )
                 )
                 Text(
                     text = "$currentHighPrice $currency",

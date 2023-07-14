@@ -38,9 +38,10 @@ class MainActivity : ComponentActivity() {
                         Box(modifier = Modifier
                             .align(Alignment.Center)){
                             DraggablePriceBar(
+                                padding = PaddingValues(start = 20.dp , end = 20.dp),
                                 onPricesChanged = { low, high ->
-                                    Log.d("DraggablePriceBar", "low: $low")
-                                    Log.d("DraggablePriceBar", "high: $high")
+                                    Log.d("DraggablePriceBarRes", "low: $low")
+                                    Log.d("DraggablePriceBarRes", "high: $high")
                                 }
                             )
                         }
