@@ -56,3 +56,7 @@ internal fun Modifier.coloredShadow(
 fun Float.toDp() : Dp {
     return (this / Resources.getSystem().displayMetrics.density).dp
 }
+
+fun Dp.toPx() : Float {
+    return (this.value * Resources.getSystem().displayMetrics.density)
+}
