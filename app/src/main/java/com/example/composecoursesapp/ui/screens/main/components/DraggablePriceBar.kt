@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -95,6 +96,10 @@ fun DraggablePriceBar(
         mutableStateOf(prices[0])
     }
 
+    LaunchedEffect(true){
+        onPricesChanged(currentLowPrice, currentHighPrice)
+    }
+
     Box(modifier = Modifier
         .padding(paddingValues = padding)
         .fillMaxWidth()
@@ -145,6 +150,7 @@ fun DraggablePriceBar(
                                     val price = (maxNum * lowSlidePercent).roundToInt()
                                     (it - price).absoluteValue <= 100
                                 } ?: return@rememberDraggableState
+                                onPricesChanged(currentLowPrice, currentHighPrice)
                             }
                         )
                 )
@@ -189,6 +195,7 @@ fun DraggablePriceBar(
                                     val price = (maxNum * highSlidePercent).roundToInt()
                                     (it - price).absoluteValue <= 100
                                 } ?: return@rememberDraggableState
+                                onPricesChanged(currentLowPrice, currentHighPrice)
                             }
                         )
                 )
@@ -206,7 +213,7 @@ fun DraggablePriceBar(
                     color = Color(0xFF1F1F39),
                     modifier = Modifier
                         .padding(top = 4.dp)
-                        .offset(x = ((maximumBarWidth * lowSlidePercent) + ((circleSize.toPx()/2)-55)).toDp())
+                        .offset(x = ((maximumBarWidth * lowSlidePercent) + ((circleSize.toPx() / 2) - 55)).toDp())
                 )
                 Text(
                     text = "$currentHighPrice $currency",
@@ -216,7 +223,7 @@ fun DraggablePriceBar(
                     color = Color(0xFF1F1F39),
                     modifier = Modifier
                         .padding(top = 4.dp)
-                        .offset(x = ((maximumBarWidth * highSlidePercent) + (circleSize.toPx()/2)).toDp())
+                        .offset(x = ((maximumBarWidth * highSlidePercent) + (circleSize.toPx() / 2)).toDp())
                 )
             }
         }
