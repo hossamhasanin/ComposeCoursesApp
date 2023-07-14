@@ -127,12 +127,10 @@ fun DraggablePriceBar(
                 )
                 Box(
                     modifier = Modifier
-                        //                    .padding(start = (maximumBarWidth * lowSlidePercent).toDp())
                         .size(circleSize, circleSize)
                         .border(circleStroke, Color(0xFF3D5CFF), shape = RoundedCornerShape(50))
                         .padding(circleStroke)
                         .background(Color.White, shape = RoundedCornerShape(50))
-                        //                    .offset{ IntOffset((200f).roundToInt() , 0) }
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
@@ -178,7 +176,6 @@ fun DraggablePriceBar(
                         .border(circleStroke, Color(0xFF3D5CFF), shape = RoundedCornerShape(50))
                         .padding(circleStroke)
                         .background(Color.White, shape = RoundedCornerShape(50))
-                        //                    .offset{ IntOffset((highSlidePercent).roundToInt() , 0) }
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
