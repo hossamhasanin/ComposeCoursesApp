@@ -25,7 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.coloredShadow
+import com.example.composecoursesapp.ui.theme.Blue
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
+import com.example.composecoursesapp.ui.theme.Gray
 
 
 @Composable
@@ -50,7 +52,7 @@ fun CustomBottomNav(
                     offsetY = 4.dp
                 )
                 .background(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(
                         topStart = 25.dp,
                         topEnd = 25.dp
@@ -73,7 +75,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .size(width = 26.dp, height = 2.dp)
                             .background(
-                                color = Color(0xFF3D5CFF),
+                                color = Blue,
                                 shape = CircleShape
                             )
                     )
@@ -82,7 +84,7 @@ fun CustomBottomNav(
                         contentDescription = "Search",
                         modifier = Modifier.
                         padding(top = 13.dp),
-                        tint = Color(0xFF3D5CFF)
+                        tint = Blue
                     )
 
                     Text(
@@ -90,7 +92,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .padding(top = 11.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFF3D5CFF)
+                        color = Blue
                     )
                 }
 
@@ -104,7 +106,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .size(width = 26.dp, height = 2.dp)
                             .background(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.background,
                                 shape = CircleShape
                             )
                     )
@@ -113,7 +115,7 @@ fun CustomBottomNav(
                         contentDescription = "Search",
                         modifier = Modifier.
                         padding(top = 13.dp),
-                        tint = Color(0xFFF4F3FD)
+                        tint = MaterialTheme.colorScheme.outline
                     )
 
                     Text(
@@ -121,7 +123,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .padding(top = 11.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFB8B8D2)
+                        color = Gray
                     )
                 }
             }
@@ -140,7 +142,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .size(width = 26.dp, height = 2.dp)
                             .background(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.background,
                                 shape = CircleShape
                             )
                     )
@@ -149,7 +151,7 @@ fun CustomBottomNav(
                         contentDescription = "Messages",
                         modifier = Modifier.
                         padding(top = 13.dp),
-                        tint = Color(0xFFF4F3FD)
+                        tint = MaterialTheme.colorScheme.outline
                     )
 
                     Text(
@@ -157,7 +159,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .padding(top = 11.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFB8B8D2)
+                        color = Gray
                     )
                 }
 
@@ -172,7 +174,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .size(width = 26.dp, height = 2.dp)
                             .background(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.background,
                                 shape = CircleShape
                             )
                     )
@@ -181,7 +183,7 @@ fun CustomBottomNav(
                         contentDescription = "Account",
                         modifier = Modifier.
                         padding(top = 13.dp),
-                        tint = Color(0xFFF4F3FD)
+                        tint = MaterialTheme.colorScheme.outline
                     )
 
                     Text(
@@ -189,7 +191,7 @@ fun CustomBottomNav(
                         modifier = Modifier
                             .padding(top = 14.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFB8B8D2)
+                        color = Gray
                     )
                 }
             }
@@ -211,14 +213,14 @@ fun BoxScope.SearchButton() {
         Box(
             modifier = Modifier
                 .background(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.background,
                     shape = CircleShape
                 )
                 .size(58.dp)
         ) {
             Box(modifier = Modifier
                 .background(
-                    color = Color(0xFFF4F3FD),
+                    color = MaterialTheme.colorScheme.tertiary,
                     shape = CircleShape
                 )
                 .size(52.dp)
@@ -229,7 +231,7 @@ fun BoxScope.SearchButton() {
                     contentDescription = "search",
                     modifier = Modifier
                         .align(Alignment.Center),
-                    tint = Color(0xFF3D5CFF)
+                    tint = MaterialTheme.colorScheme.outlineVariant
                 )
             }
         }
@@ -239,7 +241,7 @@ fun BoxScope.SearchButton() {
             modifier = Modifier
                 .padding(top = 7.dp),
             style = MaterialTheme.typography.labelSmall,
-            color = Color(0xFFB8B8D2)
+            color = Gray
         )
     }
 }

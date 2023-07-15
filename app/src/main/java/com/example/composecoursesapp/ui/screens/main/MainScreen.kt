@@ -41,6 +41,7 @@ import com.example.composecoursesapp.ui.screens.main.components.LearningPlanSect
 import com.example.composecoursesapp.ui.screens.main.components.MeetUpCard
 import com.example.composecoursesapp.ui.screens.main.components.SuggestionsSection
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
+import com.example.composecoursesapp.ui.theme.Gray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +50,7 @@ fun MainScreen() {
         bottomBar = {
             CustomBottomNav()
         },
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background
     ) {
         Box(
             modifier = Modifier
@@ -61,7 +62,7 @@ fun MainScreen() {
                     .fillMaxHeight(0.25f)
                     .fillMaxWidth()
                     .background(
-                        color = Color(0xFF3D5CFF)
+                        color = MaterialTheme.colorScheme.primary,
                     )
             )
             Column(
@@ -81,12 +82,12 @@ fun MainScreen() {
                         Text(
                             text = "Hi, Hossam",
                             style = MaterialTheme.typography.titleLarge,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                         Text(
                             text = "Let’s start learning",
                             style = MaterialTheme.typography.titleSmall,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
 
@@ -106,13 +107,13 @@ fun MainScreen() {
                             .padding(start = 20.dp, end = 20.dp, top = 19.dp)
                             .fillMaxWidth()
                             .coloredShadow(
-                                color = Color(0x4DB8B8D2),
+                                color = Gray,
                                 offsetY = 8.dp,
                                 blurRadius = 12.dp,
                                 borderRadius = 16.dp
                             )
                             .background(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.secondary,
                                 shape = RoundedCornerShape(16.dp)
                             ),
                         learnedMinutes = 46,

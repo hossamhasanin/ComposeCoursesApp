@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +38,7 @@ fun AnimatedBarIndicator(
             Color(0xFFFF5106),
         )
     ),
-    background: Color = Color(0xFFF3F2FF),
+    background: Color = MaterialTheme.colorScheme.secondaryContainer,
     cornerShape: RoundedCornerShape = RoundedCornerShape(50),
     animDuration: Int = 2000,
 ) {

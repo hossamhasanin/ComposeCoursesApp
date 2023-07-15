@@ -50,6 +50,8 @@ fun DraggablePriceBar(
     prices: List<Int> = listOf(0, 1000, 2000, 3000, 4000, 5000, 6000, 7000),
     currency: String = "L.E",
     onPricesChanged: (Int, Int) -> Unit,
+    color: Color = MaterialTheme.colorScheme.primary,
+    colorContrast: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
 
     // Optimize the prices values to fit the low and high price text on screen
@@ -128,9 +130,9 @@ fun DraggablePriceBar(
                 Box(
                     modifier = Modifier
                         .size(circleSize, circleSize)
-                        .border(circleStroke, Color(0xFF3D5CFF), shape = RoundedCornerShape(50))
+                        .border(circleStroke, color, shape = RoundedCornerShape(50))
                         .padding(circleStroke)
-                        .background(Color.White, shape = RoundedCornerShape(50))
+                        .background(colorContrast, shape = RoundedCornerShape(50))
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
@@ -164,7 +166,7 @@ fun DraggablePriceBar(
                         .padding(top = circleStroke)
                         .width(currentBarWidth.toDp())
                         .height(circleStroke)
-                        .background(Color(0xFF3D5CFF))
+                        .background(color)
                         .onSizeChanged {
                             currentBarSize = it
                             currentBarWidth = it.width.toFloat()
@@ -173,9 +175,9 @@ fun DraggablePriceBar(
                 Box(
                     modifier = Modifier
                         .size(circleSize, circleSize)
-                        .border(circleStroke, Color(0xFF3D5CFF), shape = RoundedCornerShape(50))
+                        .border(circleStroke, color, shape = RoundedCornerShape(50))
                         .padding(circleStroke)
-                        .background(Color.White, shape = RoundedCornerShape(50))
+                        .background(colorContrast, shape = RoundedCornerShape(50))
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->

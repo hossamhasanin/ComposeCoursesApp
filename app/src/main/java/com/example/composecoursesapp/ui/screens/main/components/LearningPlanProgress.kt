@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
+import com.example.composecoursesapp.ui.theme.Gray
 
 @Composable
 fun LearningPlanProgress(
@@ -51,7 +52,7 @@ fun LearningPlanProgress(
                 ),
                 modifier = Modifier
                     .padding(start = 13.dp),
-                color = Color(0xFF1F1F39)
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
 
@@ -62,7 +63,7 @@ fun LearningPlanProgress(
                         fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
                         fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
-                        color = Color(0xFF1F1F39)
+                        color = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
                     append("$spent")
@@ -73,7 +74,7 @@ fun LearningPlanProgress(
                         fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
                         fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
-                        color = Color(0xFFB8B8D2)
+                        color = Gray
                     )
                 ) {
                     append("/$total")

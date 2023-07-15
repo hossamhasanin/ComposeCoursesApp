@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
+import com.example.composecoursesapp.ui.theme.Gray
 
 @Composable
 fun LearningPlanSection(
@@ -39,7 +40,7 @@ fun LearningPlanSection(
                 fontSize = 18.sp
             ),
 
-            color = Color(0xFF1F1F39)
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Box(
@@ -47,13 +48,13 @@ fun LearningPlanSection(
                 .padding(top = 8.dp)
                 .fillMaxWidth()
                 .coloredShadow(
-                    color = Color(0x4DB8B8D2),
+                    color = Gray,
                     offsetY = 8.dp,
                     borderRadius = 16.dp,
                     blurRadius = 12.dp
                 )
                 .background(
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(16.dp)
                 )
         ) {
@@ -65,7 +66,7 @@ fun LearningPlanSection(
                 LearningPlanProgress(
                     title = "Packaging Design",
                     spent = 40,
-                    total = 48,
+                    total = 48
                 )
 
                 LearningPlanProgress(

@@ -25,28 +25,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeCoursesAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color.White
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        Box(modifier = Modifier
-                            .align(Alignment.Center)){
-                            DraggablePriceBar(
-                                padding = PaddingValues(start = 20.dp , end = 20.dp),
-                                onPricesChanged = { low, high ->
-                                    Log.d("DraggablePriceBarRes", "low: $low")
-                                    Log.d("DraggablePriceBarRes", "high: $high")
-                                }
-                            )
-                        }
-                    }
-                }
+            ComposeCoursesAppTheme(
+                dynamicColor = false
+            ) {
+                MainScreen()
             }
         }
     }

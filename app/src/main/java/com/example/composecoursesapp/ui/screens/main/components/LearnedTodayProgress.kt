@@ -30,6 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.ui.coloredShadow
+import com.example.composecoursesapp.ui.theme.Blue
+import com.example.composecoursesapp.ui.theme.DarkGray
+import com.example.composecoursesapp.ui.theme.Gray
 
 @Composable
 fun LearnedTodayProgress(
@@ -72,7 +75,7 @@ fun LearnedTodayProgress(
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = 12.sp
                     ),
-                    color = Color(0xFF858597)
+                    color = DarkGray
                 )
 
                 Text(
@@ -80,7 +83,7 @@ fun LearnedTodayProgress(
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = 12.sp
                     ),
-                    color = Color(0xFF3D5CFF)
+                    color = Blue
                 )
             }
 
@@ -88,7 +91,7 @@ fun LearnedTodayProgress(
                 buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            color = Color(0xFF1F1F39),
+                            color = MaterialTheme.colorScheme.onSecondary,
                             fontSize = 20.sp,
                             fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                             fontWeight = FontWeight.Bold
@@ -100,7 +103,7 @@ fun LearnedTodayProgress(
 
                     withStyle(
                         style = SpanStyle(
-                            color = Color(0xFF858597),
+                            color = DarkGray,
                             fontSize = 10.sp,
                             fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                             fontWeight = FontWeight.Normal
@@ -138,13 +141,13 @@ fun LearnedTodayProgressPreview() {
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp, top = 19.dp)
             .coloredShadow(
-                color = Color(0x33B8B8D2),
+                color = Gray,
                 offsetY = 8.dp,
                 blurRadius = 12.dp,
                 borderRadius = 16.dp
             )
             .background(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.secondary,
                 shape = RoundedCornerShape(16.dp)
             ),
         learnedMinutes = 30,
