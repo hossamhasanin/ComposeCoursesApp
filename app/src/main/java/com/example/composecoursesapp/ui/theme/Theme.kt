@@ -26,10 +26,13 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = Color.White,
     surface = BlueishGrey,
     onSurface = Color.White,
+    surfaceTint = Gray,
     surfaceVariant = Gray,
-    outline = Gray,
-    outlineVariant = Gray,
-    tertiary = BlueishGrey
+    onSurfaceVariant = Gray,
+    inverseSurface = DarkWhite,
+    inverseOnSurface = Gray44,
+    tertiary = DarkGray,
+    onTertiary = Color.White,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -42,10 +45,13 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Black,
     surface = DarkWhite,
     onSurface = Black,
-    surfaceVariant = Gray,
-    outline = DarkWhite,
-    outlineVariant = Blue,
-    tertiary = DarkWhite
+    surfaceTint = Gray,
+    surfaceVariant = DarkWhite,
+    onSurfaceVariant = Blue,
+    inverseSurface = Gray44,
+    inverseOnSurface = DarkWhite,
+    tertiary = Color.Transparent,
+    onTertiary = DarkGray,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -74,16 +80,16 @@ fun ComposeCoursesAppTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-//            window.statusBarColor = Blue.toArgb()
-//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
-    }
+//    val view = LocalView.current
+//    if (!view.isInEditMode) {
+//        SideEffect {
+//            val window = (view.context as Activity).window
+////            window.statusBarColor = Blue.toArgb()
+////            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+//            window.statusBarColor = Color.White.toArgb()
+//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
+//        }
+//    }
 
     MaterialTheme(
         colorScheme = colorScheme,

@@ -48,7 +48,7 @@ fun LearningPlanSection(
                 .padding(top = 8.dp)
                 .fillMaxWidth()
                 .coloredShadow(
-                    color = Gray,
+                    color = Gray.copy(alpha = 0.2f),
                     offsetY = 8.dp,
                     borderRadius = 16.dp,
                     blurRadius = 12.dp
@@ -66,14 +66,16 @@ fun LearningPlanSection(
                 LearningPlanProgress(
                     title = "Packaging Design",
                     spent = 40,
-                    total = 48
+                    total = 48,
+                    progressColor = MaterialTheme.colorScheme.inverseSurface
                 )
 
                 LearningPlanProgress(
                     title = "Packaging Design",
                     spent = 40,
                     total = 48,
-                    modifier = Modifier.padding(top = 16.dp)
+                    modifier = Modifier.padding(top = 16.dp),
+                    progressColor = MaterialTheme.colorScheme.inverseSurface
                 )
             }
         }
