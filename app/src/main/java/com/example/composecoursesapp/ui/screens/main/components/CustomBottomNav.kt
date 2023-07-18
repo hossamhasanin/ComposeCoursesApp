@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -27,12 +30,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -55,7 +60,9 @@ fun CustomBottomNav(
 
     assert(items.size == 5)
 
-    var selectedItem by remember { mutableStateOf(items[0].route) }
+    val middleButtonCircleSize = 58.dp
+
+    var selectedItem by rememberSaveable { mutableStateOf(items[0].route) }
 
     SideEffect {
         Log.d("CustomBottomNav", "SideEffect "+selectedItem)
@@ -86,33 +93,43 @@ fun CustomBottomNav(
                     )
                 )
                 .align(Alignment.BottomCenter),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
         ) {
             Row(
                 modifier = Modifier
                     .padding(start = 31.dp, bottom = 31.dp)
                     .height(65.dp)
+                    .weight(1f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
                 for (i in (0..1)){
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(start = if (i == 0) 0.dp else 28.dp)
+//                            .padding(start = if (i == 0) 0.dp else 28.dp)
                             .fillMaxHeight()
                             .clickable {
                                 items[i].onClick(navController)
                                 selectedItem = items[i].route
-                            }
+                            },
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        AnimatedVisibility(visible = selectedItem == items[i].route) {
-                            Box(
-                                modifier = Modifier
-                                    .size(width = 26.dp, height = 2.dp)
-                                    .background(
-                                        color = Blue,
-                                        shape = CircleShape
-                                    )
-                            )
+                        Row(
+                            modifier = Modifier
+                                .size(width = 26.dp, height = 2.dp)
+                        ) {
+                            AnimatedVisibility(visible = selectedItem == items[i].route) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(
+                                            color = Blue,
+                                            shape = CircleShape
+                                        )
+                                )
+                            }
                         }
                         Icon(
                             painterResource(id = items[i].icon),
@@ -121,22 +138,24 @@ fun CustomBottomNav(
                             padding(top = 13.dp),
                             tint = if (selectedItem == items[i].route) Blue else MaterialTheme.colorScheme.surfaceVariant
                         )
-
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = items[i].title,
-                            modifier = Modifier
-                                .padding(top = 11.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (selectedItem == items[i].route) Blue else Gray
                         )
                     }
                 }
             }
-
+            Spacer(modifier = Modifier
+                .width(middleButtonCircleSize + 16.dp))
             Row(
                 modifier = Modifier
                     .padding(end = 24.dp)
                     .height(65.dp)
+                    .weight(1f),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
 
                 // loop on the last two items
@@ -144,22 +163,28 @@ fun CustomBottomNav(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(start = if (i == 3) 0.dp else 17.dp)
+//                            .padding(start = if (i == 3) 0.dp else 17.dp)
                             .fillMaxHeight()
                             .clickable {
                                 selectedItem = items[i].route
                                 items[i].onClick(navController)
-                            }
+                            },
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        AnimatedVisibility(visible = selectedItem == items[i].route) {
-                            Box(
-                                modifier = Modifier
-                                    .size(width = 26.dp, height = 2.dp)
-                                    .background(
-                                        color = Blue,
-                                        shape = CircleShape
-                                    )
-                            )
+                        Row(
+                            modifier = Modifier
+                                .size(width = 26.dp, height = 2.dp)
+                        ) {
+                            AnimatedVisibility(visible = selectedItem == items[i].route) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(
+                                            color = Blue,
+                                            shape = CircleShape
+                                        )
+                                )
+                            }
                         }
                         Icon(
                             painterResource(id = items[i].icon),
@@ -168,11 +193,10 @@ fun CustomBottomNav(
                             padding(top = 13.dp),
                             tint = if (selectedItem == items[i].route) Blue else MaterialTheme.colorScheme.surfaceVariant
                         )
+                        Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
                             text = items[i].title,
-                            modifier = Modifier
-                                .padding(top = 11.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (selectedItem == items[i].route) Blue else Gray
                         )
@@ -187,7 +211,11 @@ fun CustomBottomNav(
 }
 
 @Composable
-fun BoxScope.SearchButton(navBarItems: NavBarItem , navController: NavController) {
+fun BoxScope.SearchButton(
+    navBarItems: NavBarItem ,
+    navController: NavController,
+    circleSize: Dp = 58.dp
+) {
     Column(
         modifier = Modifier
             .align(Alignment.TopCenter)
@@ -200,7 +228,7 @@ fun BoxScope.SearchButton(navBarItems: NavBarItem , navController: NavController
                     color = MaterialTheme.colorScheme.background,
                     shape = CircleShape
                 )
-                .size(58.dp)
+                .size(circleSize)
                 .clickable {
                     navBarItems.onClick(navController)
                 },
@@ -214,7 +242,7 @@ fun BoxScope.SearchButton(navBarItems: NavBarItem , navController: NavController
                     },
                     shape = CircleShape
                 )
-                .size(52.dp)
+                .size(circleSize - 6.dp)
                 .align(Alignment.Center)
             ) {
                 Icon(

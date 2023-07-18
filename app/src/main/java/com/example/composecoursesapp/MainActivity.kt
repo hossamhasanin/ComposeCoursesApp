@@ -61,6 +61,9 @@ class MainActivity : ComponentActivity() {
                                             title = "Home",
                                             route = homeScreenDest,
                                             onClick = {
+                                                if (route == homeScreenDest) {
+                                                    return@NavBarItem
+                                                }
                                                 navController.navigate(homeScreenDest){
                                                     popUpTo(mainScreenNavDest){
                                                         inclusive = true
@@ -73,6 +76,9 @@ class MainActivity : ComponentActivity() {
                                             title = "Courses",
                                             route = coursesScreenDest,
                                             onClick = {
+                                                if (route == coursesScreenDest) {
+                                                    return@NavBarItem
+                                                }
                                                 navController.navigate(coursesScreenDest){
                                                     popUpTo(mainScreenNavDest){
                                                         inclusive = true
