@@ -1,5 +1,6 @@
 package com.example.composecoursesapp.ui.screens.courses.components
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,13 +21,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.R
+import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 import com.example.composecoursesapp.ui.theme.Gray
 
@@ -40,8 +44,20 @@ fun CourseCard(
     hours: String,
     currency: String,
 ) {
+    val shadowModifier =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (LocalConfiguration.current.isNightModeActive)
+            modifier
+        else modifier.coloredShadow(
+            color = Color(0x4DB8B8D2),
+            borderRadius = 12.dp,
+            blurRadius = 8.dp,
+            offsetY = 4.dp
+        )
+    } else {
+        modifier
+    }
     Card(
-        modifier = modifier
+        modifier = shadowModifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary,

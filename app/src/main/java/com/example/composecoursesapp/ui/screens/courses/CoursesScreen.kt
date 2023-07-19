@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.composecoursesapp.ui.screens.courses
 
 import android.app.Activity
@@ -9,19 +11,33 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -37,7 +53,11 @@ import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.screens.courses.components.AnimatedTabsLayout
 import com.example.composecoursesapp.ui.screens.courses.components.CourseCard
 import com.example.composecoursesapp.ui.screens.courses.components.CoursesCategoriesSection
+import com.example.composecoursesapp.ui.screens.courses.components.FilterBottomSheet
+import com.example.composecoursesapp.ui.screens.courses.components.FilterItem
 import com.example.composecoursesapp.ui.screens.courses.components.FilterSearchTextField
+import com.example.composecoursesapp.ui.screens.courses.components.MainContentSection
+import com.example.composecoursesapp.ui.screens.courses.components.SearchResultsSection
 import com.example.composecoursesapp.ui.theme.Blue
 import com.example.composecoursesapp.ui.theme.BlueishGrey
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
@@ -47,22 +67,51 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CoursesScreen(
-    modifier: Modifier = Modifier
+    padding: PaddingValues = PaddingValues(),
 ) {
 
-    val pagerState = rememberPagerState()
+    
+    var searchFieldValue by remember {
+        mutableStateOf("")
+    }
+    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded  = true)
     val scope = rememberCoroutineScope()
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val isDarkTheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        LocalConfiguration.current.isNightModeActive
+    } else false
+
+    //TODO: Remove this when the business logic is implemented
+    var categoryFilterItems by remember {
+        mutableStateOf(listOf(
+            FilterItem("All", 0, true),
+            FilterItem("Design", 1, false),
+            FilterItem("Development", 2, false),
+            FilterItem("Marketing", 3, false),
+        ))
+    }
+
+    var durationFilterItems by remember {
+        mutableStateOf(listOf(
+            FilterItem("All", 0, true),
+            FilterItem("0-2 hours", 1, false),
+            FilterItem("2-5 hours", 2, false),
+            FilterItem("5-10 hours", 3, false),
+            FilterItem("10+ hours", 4, false),
+        ))
+    }
 
     val view = LocalView.current
     SideEffect {
         val window = (view.context as Activity).window
-        window.statusBarColor = Color.White.toArgb()
-        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
+        window.statusBarColor = backgroundColor.toArgb()
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkTheme
 
     }
-
     Box(
-        modifier = modifier
+        modifier = Modifier
+            .padding(bottom = padding.calculateBottomPadding() - 8.dp)
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.background
@@ -90,77 +139,64 @@ fun CoursesScreen(
             }
 
             FilterSearchTextField(
-                value = "",
-                onValueChange = {},
+                value = searchFieldValue,
+                onValueChange = {
+                    searchFieldValue = it
+                },
+                onFilterClick = {
+                                openBottomSheet = true
+//                    scope.launch {
+//                        bottomSheetState.show()
+//                    }
+                },
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
             )
 
-            CoursesCategoriesSection(
-                modifier = Modifier.padding(top = 27.dp , start = 20.dp , end = 20.dp)
-            )
-
-            Text(
-                text = "Choose your course",
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 18.sp
-                ),
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(top = 36.dp , start = 20.dp , end = 20.dp)
-            )
-
-            AnimatedTabsLayout(
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, top = 8.dp),
-                tabs = listOf("All", "Popular", "New"),
-                activeColor = MaterialTheme.colorScheme.primary,
-                activeTextColor = MaterialTheme.colorScheme.onPrimary,
-                inactiveColor = MaterialTheme.colorScheme.tertiary,
-                inactiveTextColor = MaterialTheme.colorScheme.onTertiary,
-                onTabSelected = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(it)
-                    }
-                }
-            )
-
-            HorizontalPager(
-                pageCount = 3,
-                state = pagerState,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .fillMaxWidth()
-                    .weight(1f),
-                userScrollEnabled = false
-            ) {
-                LaunchedEffect(true){
-                    Log.d("CoursesScreen", "CoursesScreen: $it")
-                }
-                var modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
-                modifier =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    if (LocalConfiguration.current.isNightModeActive)
-                        modifier
-                    else modifier.coloredShadow(
-                        color = Color(0x4DB8B8D2),
-                        borderRadius = 12.dp,
-                        blurRadius = 8.dp,
-                        offsetY = 4.dp
+            if (searchFieldValue.isNotEmpty()){
+                Spacer(modifier = Modifier.height(16.dp))
+                SearchResultsSection(
+                    topSearches = listOf("Android", "Kotlin", "Compose")
+                )
+            } else {
+                Spacer(modifier = Modifier.height(27.dp))
+                MainContentSection()
+            }
+            if (openBottomSheet) {
+                ModalBottomSheet(onDismissRequest = {
+                    openBottomSheet = false
+                }, sheetState = bottomSheetState, containerColor = MaterialTheme.colorScheme.secondary) {
+                    FilterBottomSheet(
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 20.dp, bottom = 33.dp),
+                        onCloseClick = {
+                            scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                                if (!bottomSheetState.isVisible) {
+                                    openBottomSheet = false
+                                }
+                            }
+                        },
+                        onApplyClick = {},
+                        onClearClick = {
+                            scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                                if (!bottomSheetState.isVisible) {
+                                    openBottomSheet = false
+                                }
+                            }
+                        },
+                        onCategoryFilterItemClick = {selectedItem ->
+                            categoryFilterItems = categoryFilterItems.map {
+                                it.copy(isSelected = it.id == selectedItem.id)
+                            }
+                        },
+                        onDurationFilterItemClick = { selectedItem ->
+                            durationFilterItems = durationFilterItems.map {
+                                it.copy(isSelected = it.id == selectedItem.id)
+                            }
+                        },
+                        categoryFilterItems = categoryFilterItems,
+                        durationFilterItems = durationFilterItems
                     )
-                } else {
-                    modifier
-                }
-                LazyColumn{
-                    items(1){
-                        CourseCard(
-                            title = "Learn to Draw",
-                            ownerName = "John Doe",
-                            imageUrl = "",
-                            price = "150",
-                            hours = "10",
-                            currency = "LE",
-                            modifier = modifier
-                        )
-                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.composecoursesapp.ui.screens.main.components
+package com.example.composecoursesapp.ui.screens.courses.components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -45,13 +45,17 @@ import kotlin.math.roundToInt
 fun DraggablePriceBar(
     circleSize: Dp = 20.dp,
     circleStroke: Dp = 2.dp,
-    padding: PaddingValues = PaddingValues(20.dp),
+    padding: PaddingValues = PaddingValues(0.dp),
+    endStopPaddingValue: Dp = 0.dp,
     maxNum: Int = 7000,
     prices: List<Int> = listOf(0, 1000, 2000, 3000, 4000, 5000, 6000, 7000),
     currency: String = "L.E",
     onPricesChanged: (Int, Int) -> Unit,
-    color: Color = MaterialTheme.colorScheme.primary,
-    colorContrast: Color = MaterialTheme.colorScheme.onPrimary,
+    circleStrokeColor: Color = MaterialTheme.colorScheme.primary,
+    circleColor: Color = MaterialTheme.colorScheme.onPrimary,
+    behindBarBackground: Color = Color(0xFFB8B8D2),
+    barColor: Color = MaterialTheme.colorScheme.primary,
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
 ) {
 
     // Optimize the prices values to fit the low and high price text on screen
@@ -99,8 +103,7 @@ fun DraggablePriceBar(
         .padding(paddingValues = padding)
         .fillMaxWidth()
         .onSizeChanged {
-            maximumBarWidth = it.width - padding
-                .calculateEndPadding(LayoutDirection.Ltr)
+            maximumBarWidth = it.width - endStopPaddingValue
                 .toPx() - ((circleSize + (circleStroke * 2) * 2)).toPx()
             val maxSlidePercent = maximumBarWidth / it.width
             currentBarWidth = maximumBarWidth * highSlidePercent
@@ -111,7 +114,7 @@ fun DraggablePriceBar(
                 .padding((circleSize/2) + (circleStroke / 2))
                 .width(maximumBarWidth.toDp())
                 .height(1.dp)
-                .background(Color(0xFFB8B8D2))
+                .background(color = behindBarBackground)
                 .align(Alignment.TopCenter)
         )
         Column(
@@ -130,9 +133,9 @@ fun DraggablePriceBar(
                 Box(
                     modifier = Modifier
                         .size(circleSize, circleSize)
-                        .border(circleStroke, color, shape = RoundedCornerShape(50))
+                        .border(circleStroke, circleStrokeColor, shape = RoundedCornerShape(50))
                         .padding(circleStroke)
-                        .background(colorContrast, shape = RoundedCornerShape(50))
+                        .background(circleColor, shape = RoundedCornerShape(50))
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
@@ -166,7 +169,7 @@ fun DraggablePriceBar(
                         .padding(top = circleStroke)
                         .width(currentBarWidth.toDp())
                         .height(circleStroke)
-                        .background(color)
+                        .background(barColor)
                         .onSizeChanged {
                             currentBarSize = it
                             currentBarWidth = it.width.toFloat()
@@ -175,9 +178,9 @@ fun DraggablePriceBar(
                 Box(
                     modifier = Modifier
                         .size(circleSize, circleSize)
-                        .border(circleStroke, color, shape = RoundedCornerShape(50))
+                        .border(circleStroke, circleStrokeColor, shape = RoundedCornerShape(50))
                         .padding(circleStroke)
-                        .background(colorContrast, shape = RoundedCornerShape(50))
+                        .background(circleColor, shape = RoundedCornerShape(50))
                         .draggable(
                             orientation = Orientation.Horizontal,
                             state = rememberDraggableState { delta ->
@@ -217,7 +220,7 @@ fun DraggablePriceBar(
                     style = MaterialTheme.typography.labelMedium.copy(
                         fontSize = 12.sp
                     ),
-                    color = Color(0xFF1F1F39),
+                    color = textColor,
                     modifier = Modifier
                         .padding(top = 4.dp)
                         .offset(x = if (currentLowPrice > 0)
@@ -230,7 +233,7 @@ fun DraggablePriceBar(
                     style = MaterialTheme.typography.labelMedium.copy(
                         fontSize = 12.sp
                     ),
-                    color = Color(0xFF1F1F39),
+                    color = textColor,
                     modifier = Modifier
                         .padding(top = 4.dp)
                         .offset(x = ((maximumBarWidth * highSlidePercent) + (circleSize.toPx() / 2)).toDp())
