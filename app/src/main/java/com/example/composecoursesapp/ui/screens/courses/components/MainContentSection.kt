@@ -19,13 +19,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.composecoursesapp.courseDetailScreenDest
+import com.example.composecoursesapp.coursesScreenDest
 import com.example.composecoursesapp.ui.coloredShadow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContentSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController = rememberNavController(),
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -83,7 +88,10 @@ fun MainContentSection(
                         price = "150",
                         hours = "10",
                         currency = "LE",
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                        onCourseClick = {
+                            navController.navigate(courseDetailScreenDest)
+                        }
                     )
                 }
             }

@@ -3,6 +3,7 @@ package com.example.composecoursesapp.ui.screens.courses.components
 import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,6 +44,7 @@ fun CourseCard(
     price: String,
     hours: String,
     currency: String,
+    onCourseClick: () -> Unit
 ) {
     val shadowModifier =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         if (LocalConfiguration.current.isNightModeActive)
@@ -58,7 +60,10 @@ fun CourseCard(
     }
     Card(
         modifier = shadowModifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onCourseClick()
+            },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary,
         ),
@@ -140,7 +145,8 @@ fun CourseCardPreview() {
             imageUrl = "",
             price = "150",
             hours = "10",
-            currency = "LE"
+            currency = "LE",
+            onCourseClick = {}
         )
     }
 }

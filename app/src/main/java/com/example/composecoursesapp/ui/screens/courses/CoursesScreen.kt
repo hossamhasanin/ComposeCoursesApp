@@ -48,6 +48,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.coloredShadow
 import com.example.composecoursesapp.ui.screens.courses.components.AnimatedTabsLayout
@@ -68,6 +70,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CoursesScreen(
     padding: PaddingValues = PaddingValues(),
+    navController: NavController = rememberNavController(),
 ) {
 
     
@@ -109,9 +112,13 @@ fun CoursesScreen(
         WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkTheme
 
     }
+
+    val rememberdPadding by remember {
+        mutableStateOf(padding)
+    }
     Box(
         modifier = Modifier
-            .padding(bottom = padding.calculateBottomPadding() - 8.dp)
+            .padding(bottom = rememberdPadding.calculateBottomPadding() - 8.dp)
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.background
@@ -160,7 +167,9 @@ fun CoursesScreen(
                 )
             } else {
                 Spacer(modifier = Modifier.height(27.dp))
-                MainContentSection()
+                MainContentSection(
+                    navController = navController,
+                )
             }
             if (openBottomSheet) {
                 ModalBottomSheet(onDismissRequest = {

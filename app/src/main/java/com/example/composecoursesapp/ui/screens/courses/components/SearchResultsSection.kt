@@ -63,7 +63,8 @@ fun SearchResultsSection(
                     price = "150",
                     hours = "10",
                     currency = "LE",
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    onCourseClick = {}
                 )
             }
         }
