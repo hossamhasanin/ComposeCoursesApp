@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -27,6 +28,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,17 +52,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.coloredShadow
+import com.example.composecoursesapp.ui.screens.courseDetails.components.AboutCourseSection
+import com.example.composecoursesapp.ui.screens.courseDetails.components.BottomButtonsSection
 import com.example.composecoursesapp.ui.screens.courseDetails.components.CourseContentCard
+import com.example.composecoursesapp.ui.screens.courseDetails.components.CourseHeaderInfoSection
 import com.example.composecoursesapp.ui.theme.Black
 import com.example.composecoursesapp.ui.theme.Blue
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
@@ -74,8 +82,8 @@ fun CourseDetailsScreen(
     padding: PaddingValues = PaddingValues(),
 ) {
 
-    val isDarkTheme =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) LocalConfiguration.current.isNightModeActive else false
     var isAboutTextExpanded by remember { mutableStateOf(false) }
+
 
     val view = LocalView.current
     SideEffect {
@@ -116,12 +124,16 @@ fun CourseDetailsScreen(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
             ){
-                Image(imageVector = ImageVector.vectorResource(id = R.drawable.tag_shape),
-                    contentDescription = null
+                Image(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.tag_shape),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .matchParentSize(),
+                    contentScale = ContentScale.FillBounds
                 )
                 Text(text = "Beginner", style = MaterialTheme.typography.titleSmall.copy(
                     fontSize = 12.sp
-                ) , color = Black)
+                ) , color = Black, modifier = Modifier.padding(start = 10.dp, end = 20.dp, top = 5.dp, bottom = 3.dp))
             }
             Spacer(modifier = Modifier.height(13.dp))
             Text(text = "Product Design v1.0", style = MaterialTheme.typography.titleLarge.copy(
@@ -143,78 +155,24 @@ fun CourseDetailsScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
             ) {
-                Row(
+                CourseHeaderInfoSection(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 35.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = "Product Design v1.0",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = 20.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSecondary
-                    )
-
-                    Text(
-                        text = "$99.99", style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = 20.sp
-                        ),
-                        color = Blue
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "6h 14min · 24 Lessons",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontSize = 12.sp
-                    ),
-                    color = if (isDarkTheme) Gray else DarkGray
+                        .padding(top = 35.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "About this course",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 16.sp
-                    ),
-                    color = MaterialTheme.colorScheme.onSecondary
+                AboutCourseSection(
+                    onAboutTextExpanded = { isAboutTextExpanded = it },
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                AnimatedContent(targetState = isAboutTextExpanded) {
-                    Text(text = "This course is designed to help you learn about product design. It will help you learn about the basics of product design and how to get started with it. It will also help you learn about the different tools that are used in product design. You will also learn about the different types of product design and how to get started with it. You will also learn about the different types of product design and how to get started with it.",
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontSize = 12.sp
-                        ),
-                        color = Gray61,
-                        maxLines = if (it) Int.MAX_VALUE else 2,
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                        ) {
-                            isAboutTextExpanded = !isAboutTextExpanded
-                        }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(vertical = 12.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 if (!isAboutTextExpanded)
                     LazyColumn(
-                        modifier = Modifier.weight(1f).padding(bottom = 100.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 100.dp),
                     ){
                         item {
                             CourseContentCard(
+                                modifier = Modifier.padding(bottom = 16.dp),
                                 isPlayable = true,
                                 onPlayClick = {},
                                 isWatched = true,
@@ -225,6 +183,7 @@ fun CourseDetailsScreen(
                         }
                         items(5){
                             CourseContentCard(
+                                modifier = Modifier.padding(bottom = 16.dp),
                                 isPlayable = true,
                                 onPlayClick = {},
                                 isWatched = false,
@@ -235,6 +194,7 @@ fun CourseDetailsScreen(
                         }
                         item {
                             CourseContentCard(
+                                modifier = Modifier.padding(bottom = 16.dp),
                                 isPlayable = false,
                                 onPlayClick = {},
                                 isWatched = false,
@@ -252,43 +212,10 @@ fun CourseDetailsScreen(
                     .background(MaterialTheme.colorScheme.secondary),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Row(
+                BottomButtonsSection(
                     modifier = Modifier
                         .padding(bottom = 34.dp, top = 14.dp)
-                ) {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFFFEBF0)
-                        ),
-                        shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier
-                            .height(50.dp)
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_otline),
-                            contentDescription = null,
-                            tint = Color(0xFFFF6905),
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(14.dp))
-                    Button(
-                        onClick = { /*TODO*/ },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Blue
-                        ),
-                        shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = "Buy Now", style = MaterialTheme.typography.titleMedium.copy(
-                                fontSize = 16.sp
-                            ), color = Color.White
-                        )
-                    }
-                }
+                )
             }
         }
 
