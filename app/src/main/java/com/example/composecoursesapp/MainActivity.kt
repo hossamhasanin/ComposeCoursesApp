@@ -17,6 +17,7 @@ import com.example.composecoursesapp.ui.screens.courses.CoursesScreen
 import com.example.composecoursesapp.ui.screens.main.MainScreen
 import com.example.composecoursesapp.ui.screens.main.components.CustomBottomNav
 import com.example.composecoursesapp.ui.screens.main.components.NavBarItem
+import com.example.composecoursesapp.ui.screens.onBoarding.OnBoardingScreen
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,7 +97,12 @@ class MainActivity : ComponentActivity() {
                     },
                     containerColor = MaterialTheme.colorScheme.background
                 ) { padding ->
-                    NavHost(navController = navController , startDestination = mainScreenNavDest){
+                    NavHost(navController = navController , startDestination = onBoardingScreenDest){
+                        composable(onBoardingScreenDest){
+                            OnBoardingScreen(
+                                padding = padding,
+                            )
+                        }
                         navigation(route = mainScreenNavDest, startDestination = homeScreenDest){
                             composable(homeScreenDest){
                                 MainScreen(
