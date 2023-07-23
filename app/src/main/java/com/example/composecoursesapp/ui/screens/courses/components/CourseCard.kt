@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.coloredShadow
+import com.example.composecoursesapp.ui.isDarkTheme
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 import com.example.composecoursesapp.ui.theme.Gray
 
@@ -46,18 +47,13 @@ fun CourseCard(
     currency: String,
     onCourseClick: () -> Unit
 ) {
-    val shadowModifier =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        if (LocalConfiguration.current.isNightModeActive)
-            modifier
-        else modifier.coloredShadow(
-            color = Color(0x4DB8B8D2),
-            borderRadius = 12.dp,
-            blurRadius = 8.dp,
-            offsetY = 4.dp
-        )
-    } else {
-        modifier
-    }
+    val shadowModifier =  if (isDarkTheme()) modifier else modifier.coloredShadow(
+        color = Color(0x4DB8B8D2),
+        borderRadius = 12.dp,
+        blurRadius = 8.dp,
+        offsetY = 4.dp
+    )
+
     Card(
         modifier = shadowModifier
             .fillMaxWidth()

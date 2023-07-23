@@ -14,13 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.composecoursesapp.ui.isDarkTheme
 import com.example.composecoursesapp.ui.theme.Blue
 import com.example.composecoursesapp.ui.theme.DarkGray
 import com.example.composecoursesapp.ui.theme.Gray
 
 @Composable
 fun CourseHeaderInfoSection(modifier: Modifier = Modifier) {
-    val isDarkTheme =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) LocalConfiguration.current.isNightModeActive else false
+    val isDarkTheme =  isDarkTheme()
 
     Row(
         modifier = modifier

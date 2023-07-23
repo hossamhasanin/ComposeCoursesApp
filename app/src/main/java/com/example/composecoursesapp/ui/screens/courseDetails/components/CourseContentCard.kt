@@ -2,6 +2,7 @@ package com.example.composecoursesapp.ui.screens.courseDetails.components
 
 import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -89,7 +90,12 @@ fun CourseContentCard(
                 .background(
                     if (isPlayable) Blue else Blue.copy(alpha = 0.3f),
                     shape = RoundedCornerShape(50)
-                ),
+                )
+                .clickable(
+                    enabled = isPlayable,
+                ) {
+                           onPlayClick()
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(

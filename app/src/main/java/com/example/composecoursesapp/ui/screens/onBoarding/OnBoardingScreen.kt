@@ -2,18 +2,30 @@ package com.example.composecoursesapp.ui.screens.onBoarding
 
 import android.app.Activity
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,8 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.example.composecoursesapp.R
+import com.example.composecoursesapp.ui.isDarkTheme
 import com.example.composecoursesapp.ui.screens.onBoarding.components.OnBoardingSlider
 import com.example.composecoursesapp.ui.screens.onBoarding.components.OnBoardingSliderItem
+import com.example.composecoursesapp.ui.theme.Blue
 import com.example.composecoursesapp.ui.theme.DarkGray
 import com.example.composecoursesapp.ui.theme.Gray
 
@@ -42,9 +56,19 @@ fun OnBoardingScreen(
     } else DarkGray
 
     val backgroundColor = MaterialTheme.colorScheme.background
-    val isDarkTheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        LocalConfiguration.current.isNightModeActive
-    } else false
+    val isDarkTheme = isDarkTheme()
+
+    val loginButtonColor = if (isDarkTheme) {
+        DarkGray
+    } else {
+        Color.White
+    }
+
+    val loginTextButtonColor = if (isDarkTheme) {
+        Color.White
+    } else {
+        Blue
+    }
 
     val view = LocalView.current
     SideEffect {
@@ -53,6 +77,8 @@ fun OnBoardingScreen(
         WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkTheme
 
     }
+
+    var currentPage by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -78,6 +104,9 @@ fun OnBoardingScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         OnBoardingSlider(
+            onPagerStateChange = {
+                currentPage = it
+            },
             onBoardingItems = listOf(
                 OnBoardingSliderItem(
                     title = "Numerous free\n" +
@@ -104,5 +133,56 @@ fun OnBoardingScreen(
                 )
             )
         )
+        Spacer(modifier = Modifier.height(50.dp))
+
+        AnimatedVisibility(visible = currentPage == 2) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+            ) {
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Blue,
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        text = "Sign up",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 16.sp
+                        ),
+                        color = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                OutlinedButton(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = loginButtonColor,
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    shape = MaterialTheme.shapes.medium,
+                    border = BorderStroke(
+                        0.5.dp,
+                        Blue
+                    )
+                ) {
+                    Text(
+                        text = "Login",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 16.sp
+                        ),
+                        color = loginTextButtonColor
+                    )
+                }
+            }
+        }
     }
 }

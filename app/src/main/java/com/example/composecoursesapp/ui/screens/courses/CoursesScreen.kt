@@ -3,8 +3,6 @@
 package com.example.composecoursesapp.ui.screens.courses
 
 import android.app.Activity
-import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,30 +16,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,19 +40,13 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composecoursesapp.R
-import com.example.composecoursesapp.ui.coloredShadow
-import com.example.composecoursesapp.ui.screens.courses.components.AnimatedTabsLayout
-import com.example.composecoursesapp.ui.screens.courses.components.CourseCard
-import com.example.composecoursesapp.ui.screens.courses.components.CoursesCategoriesSection
+import com.example.composecoursesapp.ui.isDarkTheme
 import com.example.composecoursesapp.ui.screens.courses.components.FilterBottomSheet
 import com.example.composecoursesapp.ui.screens.courses.components.FilterItem
 import com.example.composecoursesapp.ui.screens.courses.components.FilterSearchTextField
 import com.example.composecoursesapp.ui.screens.courses.components.MainContentSection
 import com.example.composecoursesapp.ui.screens.courses.components.SearchResultsSection
-import com.example.composecoursesapp.ui.theme.Blue
-import com.example.composecoursesapp.ui.theme.BlueishGrey
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
-import com.example.composecoursesapp.ui.theme.DarkWhite
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -81,9 +64,7 @@ fun CoursesScreen(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded  = true)
     val scope = rememberCoroutineScope()
     val backgroundColor = MaterialTheme.colorScheme.background
-    val isDarkTheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        LocalConfiguration.current.isNightModeActive
-    } else false
+    val isDarkTheme = isDarkTheme()
 
     //TODO: Remove this when the business logic is implemented
     var categoryFilterItems by remember {
@@ -113,12 +94,12 @@ fun CoursesScreen(
 
     }
 
-    val rememberdPadding by remember {
+    val rememberedPadding by remember {
         mutableStateOf(padding)
     }
     Box(
         modifier = Modifier
-            .padding(bottom = rememberdPadding.calculateBottomPadding() - 8.dp)
+            .padding(bottom = rememberedPadding.calculateBottomPadding() - 8.dp)
             .fillMaxSize()
             .background(
                 color = MaterialTheme.colorScheme.background

@@ -48,6 +48,7 @@ import com.example.composecoursesapp.ui.theme.Gray
 fun OnBoardingSlider(
     modifier: Modifier = Modifier,
     onBoardingItems: List<OnBoardingSliderItem>,
+    onPagerStateChange: (Int) -> Unit,
 ) {
 
     val pagerState = rememberPagerState()
@@ -59,6 +60,10 @@ fun OnBoardingSlider(
     val dotsInActiveColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         if (LocalConfiguration.current.isNightModeActive) Gray else Color(0xFFEAEAFF)
     } else Color(0xFFEAEAFF)
+
+    LaunchedEffect(pagerState.currentPage) {
+        onPagerStateChange(pagerState.currentPage)
+    }
 
     Column(
         modifier = modifier

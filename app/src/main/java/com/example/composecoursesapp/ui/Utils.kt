@@ -2,12 +2,15 @@ package com.example.composecoursesapp.ui
 
 import android.content.res.Resources
 import android.graphics.BlurMaskFilter
+import android.os.Build
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -59,4 +62,11 @@ fun Float.toDp() : Dp {
 
 fun Dp.toPx() : Float {
     return (this.value * Resources.getSystem().displayMetrics.density)
+}
+
+@Composable
+fun isDarkTheme() : Boolean{
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        LocalConfiguration.current.isNightModeActive
+    } else false
 }
