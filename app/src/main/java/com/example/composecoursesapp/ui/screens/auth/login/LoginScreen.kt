@@ -2,9 +2,11 @@ package com.example.composecoursesapp.ui.screens.auth.login
 
 
 import android.app.Activity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,7 +34,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -41,6 +45,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.example.composecoursesapp.R
 import com.example.composecoursesapp.ui.isDarkTheme
 import com.example.composecoursesapp.ui.screens.auth.components.AuthTextField
 import com.example.composecoursesapp.ui.theme.Blue
@@ -178,6 +183,74 @@ fun LoginScreen(
                             interactionSource = remember { MutableInteractionSource() },
                         ) { /*TODO*/ }
                 )
+                Spacer(modifier = Modifier.height(23.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Box(
+                        modifier = Modifier
+                            .height(0.5.dp)
+                            .weight(1f)
+                            .background(
+                                if (isDarkTheme) DarkGray else Gray
+                            )
+                    )
+                    Spacer(modifier = Modifier.width(22.dp))
+                    Text(
+                        text = "Or login with",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontSize = 12.sp
+                        ),
+                        color = if (isDarkTheme) Gray else DarkGray
+                    )
+                    Spacer(modifier = Modifier.width(22.dp))
+                    Box(
+                        modifier = Modifier
+                            .height(0.5.dp)
+                            .weight(1f)
+                            .background(
+                                if (isDarkTheme) DarkGray else Gray
+                            )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(21.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                //TODO
+                            }
+                    ){
+                        Image(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_google),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(14.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(38.dp))
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                //TODO
+                            }
+                    ){
+                        Image(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_facebook),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(14.dp)
+                        )
+                    }
+                }
             }
         }
     }
