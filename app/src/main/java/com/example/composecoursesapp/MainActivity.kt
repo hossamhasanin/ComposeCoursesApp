@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composecoursesapp.ui.screens.auth.login.LoginScreen
 import com.example.composecoursesapp.ui.screens.auth.signup.EnterPhoneScreen
 import com.example.composecoursesapp.ui.screens.auth.signup.SignUpScreen
+import com.example.composecoursesapp.ui.screens.auth.signup.VerifyPhoneScreen
 import com.example.composecoursesapp.ui.screens.courseDetails.CourseDetailsScreen
 import com.example.composecoursesapp.ui.screens.courses.CoursesScreen
 import com.example.composecoursesapp.ui.screens.main.MainScreen
@@ -100,7 +101,7 @@ class MainActivity : ComponentActivity() {
                     },
                     containerColor = MaterialTheme.colorScheme.background
                 ) { padding ->
-                    NavHost(navController = navController , startDestination = enterPhoneScreen) {
+                    NavHost(navController = navController , startDestination = verifyPhoneScreen) {
                         composable(onBoardingScreenDest){
                             OnBoardingScreen(
                                 padding = padding,
@@ -118,6 +119,11 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(enterPhoneScreen){
                             EnterPhoneScreen(
+                                padding = padding,
+                            )
+                        }
+                        composable(verifyPhoneScreen){
+                            VerifyPhoneScreen(
                                 padding = padding,
                             )
                         }
