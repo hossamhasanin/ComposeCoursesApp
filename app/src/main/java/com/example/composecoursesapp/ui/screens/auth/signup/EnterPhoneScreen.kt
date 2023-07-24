@@ -3,6 +3,7 @@ package com.example.composecoursesapp.ui.screens.auth.signup
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -149,7 +153,19 @@ fun EnterPhoneScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 20.dp, end = 27.dp),
-                            maxLines = 1
+                            maxLines = 1,
+                            onTextLayout = {
+                                // add space after each 3 characters to format phone number like 123 456 7890
+                                val space = ' '
+                                val builder = StringBuilder(phoneNumber)
+                                if (phoneNumber.length >= 4 && phoneNumber[3] != space) {
+                                    builder.insert(3, space)
+                                }
+                                if (phoneNumber.length >= 8 && phoneNumber[7] != space) {
+                                    builder.insert(7, space)
+                                }
+                                phoneNumber = builder.toString()
+                            }
                         )
 
                         Button(
@@ -170,10 +186,70 @@ fun EnterPhoneScreen(
                             )
                         }
                     }
+                }
+                Spacer(modifier = Modifier.height(35.dp))
 
-                    Spacer(modifier = Modifier.height(51.dp))
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    userScrollEnabled = false,
+                    contentPadding = PaddingValues(0.dp)
+                ){
+                    items(12) {
+                        val num = if (it == 10) "0" else (it+1).toString()
+                        Box(
+                            modifier = Modifier
+                                .height(80.dp)
+                                .clickable(
+                                    enabled = it != 9
+                                ) {
+                                  if (it == 11){
+                                      if (phoneNumber.isNotEmpty()){
+                                          phoneNumber = deleteNum(phoneNumber)
+                                      }
+                                  } else {
+                                      if (phoneNumber.length < 13){
+                                          phoneNumber += num
+                                      }
+                                  }
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            when (it) {
+                                9 -> {
+                                    Box {}
+                                }
+                                11 -> {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_delete_char),
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSecondary
+                                    )
+                                }
+                                else -> {
+                                    Text(
+                                        text = num,
+                                        style = MaterialTheme.typography.titleLarge.copy(
+                                            fontSize = 24.sp
+                                        ),
+                                        color = MaterialTheme.colorScheme.onSecondary
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+fun deleteNum(phoneNumber: String): String {
+    return if (phoneNumber[phoneNumber.length - 1] == ' ') {
+        phoneNumber.dropLast(2)
+    } else {
+        phoneNumber.dropLast(1)
     }
 }
