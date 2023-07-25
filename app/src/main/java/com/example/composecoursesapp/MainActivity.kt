@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.composecoursesapp.ui.screens.account.AccountScreen
 import com.example.composecoursesapp.ui.screens.auth.login.LoginScreen
 import com.example.composecoursesapp.ui.screens.auth.signup.EnterPhoneScreen
 import com.example.composecoursesapp.ui.screens.auth.signup.SignUpScreen
@@ -138,6 +139,11 @@ class MainActivity : ComponentActivity() {
                                 CoursesScreen(
                                     padding = padding,
                                     navController = navController
+                                )
+                            }
+                            composable(accountScreenDest){
+                                AccountScreen(
+                                    padding = padding,
                                 )
                             }
                         }
