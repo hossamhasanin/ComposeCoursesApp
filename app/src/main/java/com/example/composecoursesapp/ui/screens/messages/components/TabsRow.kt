@@ -82,11 +82,11 @@ fun TabsRow(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .horizontalScroll(scrollState , enabled = isScrollable)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(scrollState , enabled = isScrollable)
         ) {
             for ((index, tab) in tabs.withIndex()){
                 Box(

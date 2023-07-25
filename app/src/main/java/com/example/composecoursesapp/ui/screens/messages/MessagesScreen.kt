@@ -64,7 +64,7 @@ fun MessagesScreen(
                     showNotificationDot = true
                 )
             ),
-            onTabSelected = {},
+            onTabSelected = {}
         )
     }
 }
