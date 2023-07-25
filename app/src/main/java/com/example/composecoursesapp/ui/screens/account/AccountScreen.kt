@@ -62,6 +62,7 @@ fun AccountScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(padding)
             .background(MaterialTheme.colorScheme.background)
     ) {
         Text(

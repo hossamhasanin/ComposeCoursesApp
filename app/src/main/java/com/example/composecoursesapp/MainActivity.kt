@@ -1,6 +1,7 @@
 package com.example.composecoursesapp
 
 import android.os.Bundle
+import android.os.Message
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +23,7 @@ import com.example.composecoursesapp.ui.screens.courses.CoursesScreen
 import com.example.composecoursesapp.ui.screens.main.MainScreen
 import com.example.composecoursesapp.ui.screens.main.components.CustomBottomNav
 import com.example.composecoursesapp.ui.screens.main.components.NavBarItem
+import com.example.composecoursesapp.ui.screens.messages.MessagesScreen
 import com.example.composecoursesapp.ui.screens.onBoarding.OnBoardingScreen
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
 
@@ -86,13 +88,25 @@ class MainActivity : ComponentActivity() {
                                             icon = R.drawable.ic_messages,
                                             title = "Messages",
                                             route = "messages",
-                                            onClick = {}
+                                            onClick = {
+                                                navController.navigate(messageScreenDest){
+                                                    popUpTo(mainScreenNavDest){
+                                                        inclusive = true
+                                                    }
+                                                }
+                                            }
                                         ),
                                         NavBarItem(
                                             icon = R.drawable.ic_user,
                                             title = "Account",
                                             route = "account",
-                                            onClick = {}
+                                            onClick = {
+                                                navController.navigate(accountScreenDest){
+                                                    popUpTo(mainScreenNavDest){
+                                                        inclusive = true
+                                                    }
+                                                }
+                                            }
                                         ),
                                     ),
                                     navController = navController
@@ -102,7 +116,7 @@ class MainActivity : ComponentActivity() {
                     },
                     containerColor = MaterialTheme.colorScheme.background
                 ) { padding ->
-                    NavHost(navController = navController , startDestination = verifyPhoneScreen) {
+                    NavHost(navController = navController , startDestination = mainScreenNavDest) {
                         composable(onBoardingScreenDest){
                             OnBoardingScreen(
                                 padding = padding,
@@ -139,6 +153,11 @@ class MainActivity : ComponentActivity() {
                                 CoursesScreen(
                                     padding = padding,
                                     navController = navController
+                                )
+                            }
+                            composable(messageScreenDest){
+                                MessagesScreen(
+                                    padding = padding
                                 )
                             }
                             composable(accountScreenDest){
