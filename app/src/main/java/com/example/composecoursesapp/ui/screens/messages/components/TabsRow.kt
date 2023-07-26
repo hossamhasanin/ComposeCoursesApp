@@ -1,5 +1,6 @@
 package com.example.composecoursesapp.ui.screens.messages.components
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -53,10 +55,11 @@ fun TabsRow(
     isScrollable: Boolean = false,
     indicationBarWidth: Dp = 42.dp,
     indicationBarColor: Color = Blue,
+    currentSelectedTab: Int = 0,
 ) {
 
-    var selectedTab by rememberSaveable {
-        mutableStateOf(0)
+    var selectedTab by rememberSaveable(currentSelectedTab) {
+        mutableStateOf(currentSelectedTab)
     }
 
     var tabWidth by remember(customTabWidth) {
@@ -79,10 +82,10 @@ fun TabsRow(
         }
     }
 
+
     Column(
-        modifier = modifier
+        modifier = if (isScrollable) modifier.horizontalScroll(scrollState) else modifier
             .fillMaxWidth()
-            .horizontalScroll(scrollState , enabled = isScrollable)
     ) {
         Row(
             modifier = Modifier
