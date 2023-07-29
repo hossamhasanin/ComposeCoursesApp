@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    alias libs.plugins.hilt
 }
 
 android {
@@ -52,7 +54,28 @@ dependencies {
     implementation libs.composeUiToolingPreview
     implementation libs.composeMaterial3
     implementation libs.navigationCompose
+    implementation libs.composeViewModel
+
+    // Paging 3
+    implementation libs.pagingCompose
+    implementation libs.pagingRuntime
+
+    // Hilt
+    implementation libs.hiltLib
+    kapt libs.hiltCompiler
+
+    // Retrofit
+    implementation libs.retrofit
+
+    // Base module
+    implementation project(':base')
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

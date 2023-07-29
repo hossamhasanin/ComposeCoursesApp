@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    alias libs.plugins.hilt
 }
 
 android {
@@ -59,8 +61,24 @@ dependencies {
     implementation libs.composeMaterial3
     implementation libs.navigationCompose
 
-    // implement the base module
+    // Hilt
+    implementation libs.hiltLib
+    kapt libs.hiltCompiler
+
+    // Room
+    implementation libs.roomRuntime
+    kapt libs.roomCompiler
+    implementation libs.roomPaging
+
+    // Retrofit
+    implementation libs.retrofit
+    implementation libs.gson
+
+    // Base module
     implementation project(':base')
+
+    // Courses module
+    implementation project(':courses')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -69,4 +87,9 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }
