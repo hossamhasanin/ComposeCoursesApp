@@ -1,0 +1,30 @@
+[versions]
+compileSdk = "33"
+minSdk = "24"
+targetSdk = "33"
+
+composeBom = "2023.06.01"
+navigationCompose = "2.6.0"
+ktx = "1.8.0"
+lifeCycleKtx = "2.3.1"
+activityCompose = "1.5.1"
+[libraries]
+#implementation 'androidx.core:core-ktx:1.8.0'
+#implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
+#implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+#implementation 'androidx.activity:activity-compose:1.5.1'
+
+androidxCore = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+kotlinBom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "ktx" }
+lifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifeCycleKtx" }
+activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+
+
+composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = 'composeBom' }
+composeUi = { group = "androidx.compose.ui", name = "ui"}
+composeUiGraphics = { group = "androidx.compose.ui", name = "ui-graphics"}
+composeUiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview"}
+composeMaterial3 = { group = "androidx.compose.material3", name = "material3"}
+navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+
+[plugins]

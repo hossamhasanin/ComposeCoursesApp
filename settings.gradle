@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ComposeCoursesApp"
 include ':app'
+include ':courses'
+include ':base'
