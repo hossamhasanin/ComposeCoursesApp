@@ -72,7 +72,7 @@ dependencies {
 
     // Retrofit
     implementation libs.retrofit
-    implementation libs.gson
+    implementation libs.retrofitConverterGson
 
     // Base module
     implementation project(':base')

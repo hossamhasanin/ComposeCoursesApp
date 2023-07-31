@@ -26,8 +26,9 @@ import com.example.composecoursesapp.ui.screens.main.components.NavBarItem
 import com.example.composecoursesapp.ui.screens.messages.MessagesScreen
 import com.example.composecoursesapp.ui.screens.onBoarding.OnBoardingScreen
 import com.example.composecoursesapp.ui.theme.ComposeCoursesAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-@OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

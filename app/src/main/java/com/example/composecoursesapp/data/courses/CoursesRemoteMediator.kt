@@ -4,8 +4,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
 import com.example.composecoursesapp.data.local.CoursesAppDB
-import com.example.courses.data.CoursesApi
+import retrofit2.HttpException
+import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class CoursesRemoteMediator(
@@ -16,6 +18,31 @@ class CoursesRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, CourseEntity>
     ): MediatorResult {
-        TODO("Not yet implemented")
+        return try {
+            val page = when(loadType) {
+                LoadType.REFRESH -> 1
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+                LoadType.APPEND -> {
+                    val lastPage = state.lastItemOrNull()
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    lastPage.id
+                }
+            }
+
+            val courses = api.getCourses(page)
+
+            db.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    db.coursesDao.deleteAllCourses()
+                }
+                db.coursesDao.insertCourses(courses.map { it.toCourseEntity() })
+            }
+
+            MediatorResult.Success(endOfPaginationReached = courses.isEmpty())
+        } catch (e: IOException) {
+            MediatorResult.Error(e)
+        } catch (e: HttpException){
+            MediatorResult.Error(e)
+        }
     }
 }
